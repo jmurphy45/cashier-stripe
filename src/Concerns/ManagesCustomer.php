@@ -16,13 +16,38 @@ use Stripe\Exception\InvalidRequestException as StripeInvalidRequestException;
 trait ManagesCustomer
 {
     /**
+     * Get the customer related to the billable model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function customer()
+    {
+        return $this->morphOne(Cashier::$customerModel, 'billable');
+    }
+
+    /**
+     * Checks that a customer exists for the billable model
+     * 
+     * @return bool
+     */
+    protected function hasCustomer(): bool
+    {
+        return $this->customer()->exists();
+    }
+
+    /**
      * Retrieve the Stripe customer ID.
      *
      * @return string|null
      */
     public function stripeId()
     {
-        return $this->stripe_id;
+        if ( $this->hasCustomer() )
+        {
+            //throw error
+        }
+        return $this->customer->stripe_id;
+
     }
 
     /**
@@ -32,7 +57,7 @@ trait ManagesCustomer
      */
     public function hasStripeId()
     {
-        return ! is_null($this->stripe_id);
+        // return ! is_null($this->stripe_id);
     }
 
     /**

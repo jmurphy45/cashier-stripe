@@ -42,9 +42,10 @@ trait ManagesCustomer
      */
     public function stripeId()
     {
-        if ( $this->hasCustomer() )
+        if ( !$this->hasCustomer() )
         {
             //throw error
+            throw new Exception('Stripe Customer does not exist');
         }
         return $this->customer->stripe_id;
 
@@ -57,7 +58,7 @@ trait ManagesCustomer
      */
     public function hasStripeId()
     {
-        // return ! is_null($this->stripe_id);
+        
     }
 
     /**

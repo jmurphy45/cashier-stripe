@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Strip;
+namespace Laravel\Stripe;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,25 +33,5 @@ class Customer extends Model
     public function billable()
     {
         return $this->morphTo();
-    }
-
-    /**
-     * Determine if the Paddle model is on a "generic" trial at the model level.
-     *
-     * @return bool
-     */
-    public function onGenericTrial()
-    {
-        return $this->trial_ends_at && $this->trial_ends_at->isFuture();
-    }
-
-    /**
-     * Determine if the Paddle model has an expired "generic" trial at the model level.
-     *
-     * @return bool
-     */
-    public function hasExpiredGenericTrial()
-    {
-        return $this->trial_ends_at && $this->trial_ends_at->isPast();
     }
 }
